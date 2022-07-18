@@ -5,14 +5,13 @@ using UnityEngine;
 public class Point : MonoBehaviour
 {
     public int _pointball;
-  public Game _scriptGame;
+    public Game _scriptGame;
 
    
-
     private void OnTriggerEnter(Collider other) {
         if(other.gameObject.CompareTag("Ball")){
-  _scriptGame.point +=_pointball ;
-  this.gameObject.SetActive(false);
+            _scriptGame.point +=_pointball ;
+            this.gameObject.SetActive(false);
 
         }
     }

@@ -34,31 +34,34 @@ public class FlatBallLauncher : MonoBehaviour {
 	public int ballgo;
 
 
-	void Start() {
+	void Start() 
+	{
 		ball.useGravity = false;
 	}
-public void ClosePathImg(){
-	foreach (GameObject ball in _ball)
+	public void ClosePathImg()
 	{
-		ball.SetActive(false);
-	}
+		foreach (GameObject ball in _ball)
+		{
+			ball.SetActive(false);
+		}
 }
-IEnumerator BallCount(){
+	IEnumerator BallCount()
+	{
 
-	//send value point to ballover objects
-   // _BALLOVER = new _BALLOVER[_scriptGame.point];
-   yield return null;
-   Vector3 a = CalculateLaunchData ().initialVelocity;
-for (int i = 0; i < ballgo; i++)
-{
-	Debug.Log(i.ToString());
-	Physics.gravity = PathControler * gravity;
-	_BALLOVER[i].gameObject.SetActive(true);
-	_BALLOVER[i].useGravity = true;
-	_BALLOVER[i].velocity = a;
-	yield return new WaitForSecondsRealtime(.3f);
+		//send value point to ballover objects
+		// _BALLOVER = new _BALLOVER[_scriptGame.point];
+		yield return null;
+		Vector3 a = CalculateLaunchData ().initialVelocity;
+		for (int i = 0; i < ballgo; i++)
+		{
+			Debug.Log(i.ToString());
+			Physics.gravity = PathControler * gravity;
+			_BALLOVER[i].gameObject.SetActive(true);
+			_BALLOVER[i].useGravity = true;
+			_BALLOVER[i].velocity = a;
+			yield return new WaitForSecondsRealtime(.3f);
 
-}
+		}
 	//foreach (Rigidbody ball in _BALLOVER)
 	//{
        
@@ -70,9 +73,11 @@ for (int i = 0; i < ballgo; i++)
 
 	//}
 }
-	void Update() {
+	void Update() 
+	{
 
-		if (Input.GetKeyDown (KeyCode.Space)) {
+		if (Input.GetKeyDown (KeyCode.Space)) 
+		{
 
 			StopCalc = false;
             ClosePathImg();
@@ -86,34 +91,39 @@ for (int i = 0; i < ballgo; i++)
 			
 		}
 	
-		if (debugPath) {
+		if (debugPath) 
+		{
 			DrawPath ();
 		}
 
-		if (Input.GetMouseButton(0) && controllable)
+		if (Input.touchCount > 0 && controllable)
 		{
-			PathControler = new Vector3( Mathf.Clamp(PathControler.x + Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime, minPath, maxPath), 0, 0);
+			Touch touch = Input.GetTouch(0);
 
+			PathControler = new Vector3(Mathf.Clamp(PathControler.x + (touch.position.x / 1000 - 0.5f) * sensitivity * Time.deltaTime, minPath, maxPath), 0, 0);
+			
 		}
 
-  //      if (Input.touchCount > 0 && controllable)
-  //      {
-  //          Touch touch = Input.GetTouch(0);
+		/*if (Input.touchCount > 0 && controllable)
+        {
+            Touch touch = Input.GetTouch(0);
 
-		//	//transform.position = new Vector3(transform.position.x, transform.position.y, Mathf.Clamp(transform.position.z + (touch.deltaPosition.x * (mobileSensitivity / 100) * Time.deltaTime), GlobalData.LeftBorder, GlobalData.RightBorder));
+			transform.position = new Vector3(transform.position.x, transform.position.y, Mathf.Clamp(transform.position.z + (touch.deltaPosition.x * (sensitivity / 100) * Time.deltaTime), GlobalData.LeftBorder, GlobalData.RightBorder));
 
-		//	PathControler = new Vector3(Mathf.Clamp(PathControler.x + (touch.deltaPosition.x * 100 * Time.deltaTime) * sensitivity * Time.deltaTime, minPath, maxPath), 0, 0);
-		//}
+			PathControler = new Vector3(Mathf.Clamp(PathControler.x + (touch.deltaPosition.x * 100 * Time.deltaTime) * sensitivity * Time.deltaTime, minPath, maxPath), 0, 0);
+		}*/
 
-    }
+	}
 
-	void Launch() {
+	void Launch() 
+	{
 		Physics.gravity = PathControler * gravity;
 		ball.useGravity = true;
 		ball.velocity = CalculateLaunchData ().initialVelocity;
 	}
 
-	LaunchData CalculateLaunchData() {
+	LaunchData CalculateLaunchData() 
+	{
 
 		float time = 0;
 
@@ -132,12 +142,14 @@ for (int i = 0; i < ballgo; i++)
 
 	}
 
-	void DrawPath() {
+	void DrawPath() 
+	{
 		LaunchData launchData = CalculateLaunchData ();
 		Vector3 previousDrawPoint = ball.position;
 
 		int resolution = 30;
-		for (int i = 1; i <= resolution; i++) {
+		for (int i = 1; i <= resolution; i++) 
+		{
 			float simulationTime = i / (float)resolution * launchData.timeToTarget;
 
 			Vector3 displacement = launchData.initialVelocity * simulationTime + PathControler * gravity * simulationTime * simulationTime / 2f;
@@ -149,7 +161,8 @@ for (int i = 0; i < ballgo; i++)
 		}
 	}
 
-	struct LaunchData {
+	struct LaunchData 
+	{
 		public readonly Vector3 initialVelocity;
 		public readonly float timeToTarget;
 
